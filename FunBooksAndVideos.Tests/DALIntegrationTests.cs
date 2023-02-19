@@ -1,10 +1,7 @@
-using Azure.Core;
 using FunBooksAndVideos.DAL.Context;
 using FunBooksAndVideos.DAL.Entities;
 using FunBooksAndVideos.DAL.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
-using System.Globalization;
 
 namespace FunBooksAndVideos.Tests
 {

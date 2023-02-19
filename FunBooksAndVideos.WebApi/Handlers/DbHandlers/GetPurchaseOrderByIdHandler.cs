@@ -1,15 +1,17 @@
 ﻿using FunBooksAndVideos.DAL.Context;
 using FunBooksAndVideos.DAL.Entities;
+using FunBooksAndVideos.WebApi.Handlers.Base;
 using FunBooksAndVideos.WebApi.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FunBooksAndVideos.WebApi.Handlers
+namespace FunBooksAndVideos.WebApi.Handlers.DbHandlers
 {
-    public class GetPurchaseOrderByIdHandler : IRequestHandler<GetPurchaseOrderByIdQuery, PurchaseOrder>
+    public class GetPurchaseOrderByIdHandler
+        : DbHandler, IRequestHandler<GetPurchaseOrderByIdQuery, PurchaseOrder>
     {
-        private readonly FunDbContext _dbContext;
-        public GetPurchaseOrderByIdHandler(FunDbContext dbContext) => _dbContext = dbContext;
+        public GetPurchaseOrderByIdHandler(FunDbContext dbContext)
+            : base(dbContext) { }
 
         public async Task<PurchaseOrder> Handle(
             GetPurchaseOrderByIdQuery request,

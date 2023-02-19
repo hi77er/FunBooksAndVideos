@@ -1,15 +1,17 @@
 ﻿using FunBooksAndVideos.DAL.Context;
 using FunBooksAndVideos.DAL.Entities;
+using FunBooksAndVideos.WebApi.Handlers.Base;
 using FunBooksAndVideos.WebApi.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FunBooksAndVideos.WebApi.Handlers
+namespace FunBooksAndVideos.WebApi.Handlers.DbHandlers
 {
-    public class GetAllItemsHandler : IRequestHandler<GetAllItemsQuery, IEnumerable<Item>>
+    public class GetAllItemsHandler
+        : DbHandler, IRequestHandler<GetAllItemsQuery, IEnumerable<Item>>
     {
-        private readonly FunDbContext _dbContext;
-        public GetAllItemsHandler(FunDbContext dbContext) => _dbContext = dbContext;
+        public GetAllItemsHandler(FunDbContext dbContext)
+            : base(dbContext) { }
 
         public async Task<IEnumerable<Item>> Handle(
             GetAllItemsQuery request,

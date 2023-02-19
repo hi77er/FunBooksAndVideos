@@ -1,5 +1,6 @@
 using FunBooksAndVideos.DAL.Entities;
 using FunBooksAndVideos.WebApi.Commands;
+using FunBooksAndVideos.WebApi.Commands.DbCommands;
 using FunBooksAndVideos.WebApi.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace FunBooksAndVideos.Controllers
         public async Task<IActionResult> Add([FromBody] Customer customer)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _mediator.Send(new AddCustomerCommand(customer));
+            await _mediator.Send(new CommitCustomerCommand(customer));
             return Ok();
         }
 
@@ -41,7 +42,7 @@ namespace FunBooksAndVideos.Controllers
         public async Task<IActionResult> Update([FromBody] Customer customer)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _mediator.Send(new UpdateCustomerCommand(customer));
+            await _mediator.Send(new CommitUpdatedCustomerCommand(customer));
             return Ok();
         }
 
@@ -49,7 +50,7 @@ namespace FunBooksAndVideos.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _mediator.Send(new DeleteCustomerCommand(id));
+            await _mediator.Send(new CommitDeletedCustomerCommand(id));
             return Ok();
         }
 

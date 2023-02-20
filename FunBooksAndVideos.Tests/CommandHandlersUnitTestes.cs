@@ -51,8 +51,8 @@ namespace FunBooksAndVideos.Tests
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
             _mockItemsSet.Verify(m => m.Add(It.IsAny<Item>()), Times.Once());
-            _mockDbContext.Verify(m => m.SaveChanges(), Times.Never());
             _mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            _mockDbContext.Verify(m => m.SaveChanges(), Times.Never());
 
             Xunit.Assert.Contains(item1, _mockDbContext.Object.Items);
         }
@@ -88,15 +88,15 @@ namespace FunBooksAndVideos.Tests
             this.ConfigureMockDbSet(_mockOrdersSet, orders);
             _mockDbContext.Setup(m => m.PurchaseOrders).Returns(_mockOrdersSet.Object);
 
-            var command = new AddPurchaseOrderCommand(order);
-            var handler = new AddPurchaseOrderHandler(_mockDbContext.Object);
+            var command = new CommitPurchaseOrderCommand(order);
+            var handler = new CommitPurchaseOrderHandler(_mockDbContext.Object);
 
             // Act
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
             _mockOrdersSet.Verify(m => m.Add(It.IsAny<PurchaseOrder>()), Times.Once());
+            _mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
             _mockDbContext.Verify(m => m.SaveChanges(), Times.Never());
-            _mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never());
 
             Xunit.Assert.Contains(order, _mockDbContext.Object.PurchaseOrders);
         }
@@ -128,8 +128,8 @@ namespace FunBooksAndVideos.Tests
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
             _mockCustomersSet.Verify(m => m.Add(It.IsAny<Customer>()), Times.Once());
-            _mockDbContext.Verify(m => m.SaveChanges(), Times.Never());
             _mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            _mockDbContext.Verify(m => m.SaveChanges(), Times.Never());
 
             Xunit.Assert.Contains(customer, _mockDbContext.Object.Customers);
         }

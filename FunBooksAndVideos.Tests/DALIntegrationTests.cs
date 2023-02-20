@@ -109,6 +109,8 @@ namespace FunBooksAndVideos.Tests
                             )
                 })
                 .ToList();
+            
+            var countBefore = _dbContext.PurchaseOrders.Count();
 
             _dbContext.PurchaseOrders.Add(order1);
             _dbContext.Customers.Update(customer);
@@ -139,7 +141,7 @@ namespace FunBooksAndVideos.Tests
 
             var orders = _dbContext.PurchaseOrders.ToList();
 
-            Assert.AreEqual(2, orders.Count);
+            Assert.AreEqual(countBefore + 2, orders.Count);
         }
 
     }

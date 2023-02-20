@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunBooksAndVideos.WebApi", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunBooksAndVideos.DAL", "FunBooksAndVideos.DAL\FunBooksAndVideos.DAL.csproj", "{ADD9B1E0-6235-4DCC-A046-EF03F9BE040D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunBooksAndVideos.Tests", "FunBooksAndVideos.Tests\FunBooksAndVideos.Tests.csproj", "{CC200FFE-970C-484A-A801-5C637C22D25B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunBooksAndVideos.Tests", "FunBooksAndVideos.Tests\FunBooksAndVideos.Tests.csproj", "{CC200FFE-970C-484A-A801-5C637C22D25B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,6 @@ using MediatR;
 
 namespace FunBooksAndVideos.WebApi.Commands.DbCommands
 {
-    public record AddPurchaseOrderCommand(PurchaseOrder PurchaseOrder) 
-        : IRequest<FunDbContext>;
+    public record CommitPurchaseOrderCommand(PurchaseOrder PurchaseOrder) 
+        : IRequest<Unit>;
 }

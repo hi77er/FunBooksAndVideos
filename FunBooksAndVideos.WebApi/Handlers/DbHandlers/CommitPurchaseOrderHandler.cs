@@ -1,26 +1,45 @@
 ﻿using FunBooksAndVideos.DAL.Context;
-using FunBooksAndVideos.DAL.Entities;
 using FunBooksAndVideos.DAL.Entities.Enums;
-using FunBooksAndVideos.WebApi.Commands;
+using FunBooksAndVideos.DAL.Entities;
 using FunBooksAndVideos.WebApi.Commands.DbCommands;
 using FunBooksAndVideos.WebApi.Handlers.Base;
 using MediatR;
 
 namespace FunBooksAndVideos.WebApi.Handlers.DbHandlers
 {
-    public class AddMembershipsHandler
-        : DbHandler, IDbRequestHandler<AddMembershipsCommand>
+    public class CommitPurchaseOrderHandler
+        : DbHandler, IRequestHandler<CommitPurchaseOrderCommand, Unit>
     {
-        public AddMembershipsHandler(FunDbContext dbContext)
+        public CommitPurchaseOrderHandler(FunDbContext dbContext)
             : base(dbContext) { }
 
-        public async Task<FunDbContext> Handle(AddMembershipsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CommitPurchaseOrderCommand request, CancellationToken cancellationToken)
         {
+            this.AddShippingSlip(request);
             this.AddMemberships(request);
-            return _dbContext;
+
+            _dbContext.PurchaseOrders.Add(request.PurchaseOrder);
+            await _dbContext.SaveChangesAsync();
+            return Unit.Value;
         }
 
-        private void AddMemberships(AddMembershipsCommand request)
+        private void AddShippingSlip(CommitPurchaseOrderCommand request)
+        {
+            if (request.PurchaseOrder.Items?
+                .Any(x => x.Item.ItemType == ItemType.Physical)
+                    ?? false)
+            {
+                request.PurchaseOrder.ShippingSlip = new ShippingSlip()
+                {
+                    OrderId = request.PurchaseOrder.Id,
+                    ShippingCarrier = ShippingCarrier.UPS
+                };
+            }
+
+            _dbContext.PurchaseOrders.Update(request.PurchaseOrder);
+        }
+
+        private void AddMemberships(CommitPurchaseOrderCommand request)
         {
             var customer = _dbContext.Customers
                 .First(x => x.Id.Equals(request.PurchaseOrder.CustomerId));
@@ -34,11 +53,11 @@ namespace FunBooksAndVideos.WebApi.Handlers.DbHandlers
                     EndDate =
                         x.Item.SubscriptionType == SubscriptionType.Monthly
                             ? DateTime.UtcNow.Date.AddMonths(1)
-                            : 
+                            :
                                 x.Item.SubscriptionType == SubscriptionType.Annual
                                     ? DateTime.UtcNow.Date.AddYears(1)
                                     : DateTime.UtcNow.Date.AddYears(100)
-                            
+
                 })
                 .ToList();
 

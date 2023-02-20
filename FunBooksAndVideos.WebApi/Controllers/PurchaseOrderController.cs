@@ -34,12 +34,7 @@ namespace FunBooksAndVideos.Controllers
         public async Task<IActionResult> Add([FromBody] PurchaseOrder purchaseOrder)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            
-            await _mediator.Send(new AddPurchaseOrderCommand(purchaseOrder));
-            await _mediator.Send(new AddShippingSlipCommand(purchaseOrder));
-            var ctx = await _mediator.Send(new AddMembershipsCommand(purchaseOrder));
-            await ctx.SaveChangesAsync();
-
+            await _mediator.Send(new CommitPurchaseOrderCommand(purchaseOrder));
             return Ok();
         }
 

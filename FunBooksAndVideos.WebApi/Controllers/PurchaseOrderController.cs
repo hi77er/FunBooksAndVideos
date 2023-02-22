@@ -1,5 +1,5 @@
-using FunBooksAndVideos.DAL.Entities;
-using FunBooksAndVideos.WebApi.Commands.DbCommands;
+using FunBooksAndVideos.DTOs;
+using FunBooksAndVideos.WebApi.Commands;
 using FunBooksAndVideos.WebApi.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

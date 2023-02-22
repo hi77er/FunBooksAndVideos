@@ -1,9 +1,8 @@
 using FunBooksAndVideos.DAL.Context;
+using FunBooksAndVideos.Repository.Configuration;
 using FunBooksAndVideos.WebApi.Behaviors;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 const string connStrName = "DefaultConnection";
 
@@ -19,6 +18,8 @@ builder.Services.AddDbContext<FunDbContext>(
     options => options.UseSqlServer(
             builder.Configuration.GetConnectionString(connStrName)
         ));
+builder.Services.ConfigureRepositories();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddMediatR((config) =>
 {
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);

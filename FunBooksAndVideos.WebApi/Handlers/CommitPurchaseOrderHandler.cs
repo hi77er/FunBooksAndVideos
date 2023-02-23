@@ -39,7 +39,7 @@ namespace FunBooksAndVideos.WebApi.Handlers
 
         private void AddShippingSlip(PurchaseOrder entity)
         {
-            if (entity.Items?
+            if (entity.PurchaseOrderItems?
                 .Any(x => x.Item.ItemType == ItemType.Physical)
                     ?? false)
             {
@@ -56,7 +56,7 @@ namespace FunBooksAndVideos.WebApi.Handlers
         private async void AddMemberships(PurchaseOrder entity)
         {
             var anySubscriptions = entity
-                .Items
+                .PurchaseOrderItems
                 .Any(x => x.Item.SubscriptionType != null);
 
             if (anySubscriptions)
@@ -64,7 +64,7 @@ namespace FunBooksAndVideos.WebApi.Handlers
                 var customer = await this._customerRepository
                     .GetByIdAsync(entity.CustomerId);
 
-                customer.Memberships = entity.Items
+                customer.Memberships = entity.PurchaseOrderItems
                     .Where(x => x.Item.SubscriptionType != null)
                     .Select(x => new Membership()
                     {

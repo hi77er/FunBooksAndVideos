@@ -1,6 +1,7 @@
 using FunBooksAndVideos.DAL.Context;
 using FunBooksAndVideos.Repository.Configuration;
 using FunBooksAndVideos.WebApi.Behaviors;
+using FunBooksAndVideos.WebApi.Mapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,8 @@ builder.Services.AddDbContext<FunDbContext>(
     options => options.UseSqlServer(
             builder.Configuration.GetConnectionString(connStrName)
         ));
+builder.Services.AddAutoMapper(typeof(EntityDTOProfile));
 builder.Services.ConfigureRepositories();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddMediatR((config) =>
 {
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);

@@ -1,6 +1,4 @@
-﻿using FunBooksAndVideos.DAL.Entities.Enums;
-
-namespace FunBooksAndVideos.DAL.Entities
+﻿namespace FunBooksAndVideos.DAL.Entities
 {
     public class PurchaseOrderItem
     {

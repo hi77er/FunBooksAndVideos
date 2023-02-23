@@ -10,7 +10,7 @@ namespace FunBooksAndVideos.DAL.Entities
         public string OrderNumber { get; set; } = string.Empty;
         
         public Customer Customer { get; set; }
-        public ICollection<PurchaseOrderItem>  Items { get; set; } = new List<PurchaseOrderItem>();
+        public ICollection<PurchaseOrderItem>  PurchaseOrderItems { get; set; }
         public ShippingSlip? ShippingSlip { get; set; }
     }
 }

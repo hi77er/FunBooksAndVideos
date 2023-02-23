@@ -76,24 +76,24 @@ namespace FunBooksAndVideos.Tests
                 Customer = customer,
                 OrderNumber = "743254"
             };
-            order1.Items = new List<PurchaseOrderItem>(
+            order1.PurchaseOrderItems = new List<PurchaseOrderItem>(
                 new PurchaseOrderItem[] {
                     new PurchaseOrderItem() { ItemId = item1.Id, Item = item1, OrderId = order1.Id, Amount = 2 },
                     new PurchaseOrderItem() { ItemId = item2.Id, Item = item2, OrderId = order1.Id  },
                     new PurchaseOrderItem() { ItemId = item3.Id, Item = item3, OrderId = order1.Id },
                 }
             );
-            var physicalItems = order1.Items
+            var physicalItems = order1.PurchaseOrderItems
                 .Where(x => x.Item.ItemType == ItemType.Physical);
 
             if (physicalItems.Any())
                 order1.ShippingSlip = new ShippingSlip() { OrderId = order1.Id, Order = order1, ShippingCarrier = ShippingCarrier.UPS };
 
-            var subscriptions = order1.Items
+            var subscriptions = order1.PurchaseOrderItems
                 .Where(x => x.Item.SubscriptionType != null);
 
             if (physicalItems.Any())
-                customer.Memberships = order1.Items
+                customer.Memberships = order1.PurchaseOrderItems
                 .Where(x => x.Item.SubscriptionType != null)
                 .Select(x => new Membership()
                 {
@@ -123,13 +123,13 @@ namespace FunBooksAndVideos.Tests
                 Customer = customer,
                 OrderNumber = "982125"
             };
-            order2.Items = new List<PurchaseOrderItem>(
+            order2.PurchaseOrderItems = new List<PurchaseOrderItem>(
                 new PurchaseOrderItem[] {
                     new PurchaseOrderItem() { ItemId = item2.Id, Item = item2, OrderId = order2.Id },
                 }
             );
             var physicalItems2 = order2
-                .Items
+                .PurchaseOrderItems
                 .Select(x => x.Item.ItemType)
                 .Where(x => x == ItemType.Physical);
 

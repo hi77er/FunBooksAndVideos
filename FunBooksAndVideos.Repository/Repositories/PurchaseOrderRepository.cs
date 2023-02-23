@@ -9,7 +9,7 @@ namespace FunBooksAndVideos.Repository
     {
         private readonly FunDbContext _dbContext;
 
-        public PurchaseOrderRepository(FunDbContext dbContext) 
+        public PurchaseOrderRepository(FunDbContext dbContext)
             => _dbContext = dbContext;
 
         public void Add(PurchaseOrder entity)
@@ -22,14 +22,21 @@ namespace FunBooksAndVideos.Repository
             => this._dbContext.PurchaseOrders.Remove(entity);
 
         public async Task<PurchaseOrder> GetByIdAsync(Guid id)
-            => await this._dbContext.PurchaseOrders.FirstOrDefaultAsync(x => x.Id == id);
+            => await this._dbContext
+            .PurchaseOrders
+            .Include(x => x.PurchaseOrderItems)
+            .Include(x => x.ShippingSlip).FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<IEnumerable<PurchaseOrder>> GetAllAsync()
-            => await this._dbContext.PurchaseOrders.ToListAsync();
+            => await this._dbContext
+            .PurchaseOrders
+            .Include(x => x.PurchaseOrderItems)
+            .Include(x => x.ShippingSlip)
+            .ToListAsync();
 
 
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken) 
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
             => await this._dbContext.SaveChangesAsync(cancellationToken);
     }
 }

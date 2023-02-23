@@ -22,10 +22,16 @@ namespace FunBooksAndVideos.Repository
             => this._dbContext.Customers.Remove(entity);
 
         public async Task<Customer> GetByIdAsync(Guid id)
-            => await this._dbContext.Customers.FirstOrDefaultAsync(x => x.Id == id);
+            => await this._dbContext.Customers
+            .Include(x => x.Memberships)
+            .Include(x => x.Orders)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
-            => await this._dbContext.Customers.ToListAsync();
+            => await this._dbContext.Customers
+            .Include(x => x.Memberships)
+            .Include(x => x.Orders)
+            .ToListAsync();
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
             => await this._dbContext.SaveChangesAsync(cancellationToken);
